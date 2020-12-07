@@ -21,47 +21,100 @@ using namespace std;
 
 
 class resources {
+    public:
 
-    int wood;
-    int steel;
-    int plasteel;
-    int chemfuel;
-    int cloth;
+    int wood = 100;
+    int steel = 100;
+    int plasteel = 100;
+    int chemfuel = 100;
+    int cloth = 100;
+
 
 
 };
 
-class item {
-    // not being used right now
 
+
+class item {
+
+    public:
     string name;
     resources cost;
 
 
+
 };
 
-void build_item(item i) { // put resources here and check if there's availible resources
-    // if there is enough, subtract from stored resources and start building
+// build a check function
+bool checkResources (item * i){
+
+
+    // make a boolean to represent if you can build item
+
+    bool canBuild = true;
+
+    // compares checkResources "i" with storedResources
+
+    if (i->cost.wood < storedResources->wood) {
+        cout << "Enough wood for anything wooden" << '\n';
+    };
+    if (i->cost.steel < storedResources->steel) {
+        cout << "Enough steel for weapons" << '\n';
+    };
+    if (i->cost.plasteel < storedResources->plasteel) {
+        cout << "Enough plasteel for armor" << '\n';
+    };
+    if (i->cost.chemfuel < storedResources->chemfuel) {
+        cout << "Enough chemfuel for anything explosive" << '\n';
+    };
+    if (i->cost.cloth < storedResources->cloth) {
+        cout << "Enough cloth for clothing" << '\n';
+    }; 
+
+}
+
+bool build_item (item * i) { // put resources here and check if there's availible resources
+
+
+
+    if (checkResources(i)) { // subtract cost of i in storedResources
+        cout << "Can build stuff!" << '\n'; 
     // then add product to built items
-
-    woodInput;
-    steelInput;
-    plasteelInput;
-    chemfuelInput;
-    chemfuelInput;
-    clothInput;
+        
 
 
+    };
 
+    // if there is enough, subtract from stored resources and start building
+
+    //woodInput;
+    //steelInput;
+    //plasteelInput;
+    //chemfuelInput;
+    //clothInput;
+
+
+    
 };
 
 vector<item> built_items; // put finished products here
+// compare with global resources
 resources* storedResources;
-resources* woodInput;
-resources* steelInput;
-resources* plasteelInput;
-resources* chemfuelInput;
-resources* clothInput;
+
+
+
+
+void printResults() {
+
+    cout << "Wood: " << '\n';
+    cout << "Steel: " << '\n';
+    cout << "Plasteel: " << '\n';
+    cout << "Chemfuel: " << '\n';
+    cout << "Cloth: " << '\n';
+
+
+};
+
 
 
 string userInput;
@@ -84,7 +137,7 @@ void chooseChoice() {
     do {
 
         cout << "Choose a material to process (1)Wood, (2)Steel, (3)Plasteel, (4)Chemfuel, (5)Cloth" << '\n';
-
+        
         cin >> userInput;
 
         switch (userInput) {
@@ -101,7 +154,7 @@ void chooseChoice() {
 
 
         }
-
+        
 
         cout << "Would you like to repeat? Y/N" << '\n';
         cin >> replay;
@@ -134,8 +187,8 @@ void chooseChoice() {
 
 
 int main() {
-    printf("Loading program...\n");
+	printf("Loading program...\n");
     chooseChoice();
-
+    checkResources;
 }
 
