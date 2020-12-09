@@ -4,6 +4,7 @@
 #include<iostream>
 #include <map>
 #include<string>
+#include "ConsoleApplication1.h"
 
 using namespace std;
 
@@ -23,16 +24,13 @@ using namespace std;
 class resources {
     public:
 
-    int wood = 100;
-    int steel = 100;
-    int plasteel = 100;
-    int chemfuel = 100;
-    int cloth = 100;
-
-
+    int wood;
+    int steel;
+    int plasteel;
+    int chemfuel;
+    int cloth;
 
 };
-
 
 
 class item {
@@ -41,80 +39,97 @@ class item {
     string name;
     resources cost;
 
-
-
-};
-
-// build a check function
-bool checkResources (item * i){
-
-
-    // make a boolean to represent if you can build item
-
-    bool canBuild = true;
-
-    // compares checkResources "i" with storedResources
-
-    if (i->cost.wood < storedResources->wood) {
-        cout << "Enough wood for anything wooden" << '\n';
-    };
-    if (i->cost.steel < storedResources->steel) {
-        cout << "Enough steel for weapons" << '\n';
-    };
-    if (i->cost.plasteel < storedResources->plasteel) {
-        cout << "Enough plasteel for armor" << '\n';
-    };
-    if (i->cost.chemfuel < storedResources->chemfuel) {
-        cout << "Enough chemfuel for anything explosive" << '\n';
-    };
-    if (i->cost.cloth < storedResources->cloth) {
-        cout << "Enough cloth for clothing" << '\n';
-    }; 
-
-}
-
-bool build_item (item * i) { // put resources here and check if there's availible resources
-
-
-
-    if (checkResources(i)) { // subtract cost of i in storedResources
-        cout << "Can build stuff!" << '\n'; 
-    // then add product to built items
-        
-
-
-    };
-
-    // if there is enough, subtract from stored resources and start building
-
-    //woodInput;
-    //steelInput;
-    //plasteelInput;
-    //chemfuelInput;
-    //clothInput;
-
-
-    
 };
 
 vector<item> built_items; // put finished products here
+
+
+int table = 0;
+int gun = 0;
+int armor = 0;
+int shells = 0;
+int clothes = 0;
+
 // compare with global resources
 resources* storedResources;
 
 
 
+// build a check function
+bool checkResources (item * i){
+
+    // make a boolean to represent if you can build item
+
+    bool canBuild = false;
+
+    // compares checkResources "i" with storedResources
+
+    if (i->cost.wood < storedResources->wood) {
+        cout << "Enough wood for anything wooden" << '\n';
+        canBuild = true;
+        return canBuild;
+    };
+    if (i->cost.steel < storedResources->steel) {
+        cout << "Enough steel for weapons" << '\n';
+        canBuild = true;
+        return canBuild;
+    };
+    if (i->cost.plasteel < storedResources->plasteel) {
+        cout << "Enough plasteel for armor" << '\n';
+        canBuild = true;
+        return canBuild;
+    };
+    if (i->cost.chemfuel < storedResources->chemfuel) {
+        cout << "Enough chemfuel for anything explosive" << '\n';
+        canBuild = true;
+        return canBuild;
+    };
+    if (i->cost.cloth < storedResources->cloth) {
+        cout << "Enough cloth for clothing" << '\n';
+        canBuild = true;
+        return canBuild;
+    };
+ 
+    return canBuild;
+}
+
+void build_item (item * i) { // put resources here and check if there's availible resources
+
+    if (checkResources(i)) { // subtract cost of i in storedResources
+        cout << "Can build stuff!" << '\n'; 
+        // then add product to built items
+        
+        storedResources->wood = storedResources->wood - i->cost.wood;  // subtracts stored wood with cost of wood for item i
+        storedResources->steel = storedResources->steel - i->cost.steel;
+        storedResources->plasteel = storedResources->plasteel - i->cost.plasteel;
+        storedResources->chemfuel = storedResources->chemfuel - i->cost.chemfuel;
+        storedResources->cloth = storedResources->cloth - i->cost.cloth;
+        // with individual resources subtracted, add item to vector built_items
+
+        built_items.push_back(*i);
+
+    };
+    
+};
 
 void printResults() {
 
-    cout << "Wood: " << '\n';
-    cout << "Steel: " << '\n';
-    cout << "Plasteel: " << '\n';
-    cout << "Chemfuel: " << '\n';
-    cout << "Cloth: " << '\n';
+    cout << "Built items vector: " << '\n';
 
+    for (item i : built_items) {
+        // for loop hands you each element of the vector one at a time
+        // and stores it in i
+
+        cout << "item = " << i.name << '\n';
+    };
+
+    //cout << "Tables: " << table << '\n';
+    //cout << "Guns: " << gun << '\n';
+    //cout << "Marine Armor: " << armor << '\n';
+    //cout << "Mortar Shells: " << shells << '\n';
+    //cout << "Dusters: " << clothes << '\n';
 
 };
-
 
 
 string userInput;
@@ -152,9 +167,7 @@ void chooseChoice() {
 
         case 5: cout << "Enter the amount of cloth: "; cin >> clothInput; break;
 
-
         }
-        
 
         cout << "Would you like to repeat? Y/N" << '\n';
         cin >> replay;
@@ -168,27 +181,73 @@ void chooseChoice() {
     cout << "Chemfuel: " << chemfuelInput << '\n';
     cout << "Cloth: " << clothInput << '\n';
 
-    //calculations
-    int woodOutput = woodInput / 28;
-    int steelOutput = steelInput / 60;
-    int plasteelOutput = plasteelInput / 100;
-    int chemfuelOutput = chemfuelInput / 15;
-    int clothOutput = clothInput / 80;
+    storedResources = new resources();
+    storedResources->wood = woodInput;
+    storedResources->steel = steelInput;
+    storedResources->plasteel = plasteelInput;
+    storedResources->chemfuel = chemfuelInput;
+    storedResources->cloth = clothInput;
 
-    cout << "With these resources, you can make..." << '\n';
-    cout << woodOutput << " table(s)." << '\n';
-    cout << steelOutput << " bolt-action rifle(s)." << '\n';
-    cout << plasteelOutput << " marine armor(s)." << '\n';
-    cout << chemfuelOutput << " mortar shell(s)." << '\n';
-    cout << clothOutput << " duster(s)" << '\n';
+    //HARD CODED PROGRAMMING BELOW
 
+    //int woodOutput = woodInput / 28;
+    //int steelOutput = steelInput / 60;
+    //int plasteelOutput = plasteelInput / 100;
+  //  int chemfuelOutput = chemfuelInput / 15;
+//    int clothOutput = clothInput / 80;
+
+   // cout << "With these resources, you can make..." << '\n';
+ //   cout << woodOutput << " table(s)." << '\n';
+ //   cout << steelOutput << " bolt-action rifle(s)." << '\n';
+ //   cout << plasteelOutput << " marine armor(s)." << '\n';
+ //   cout << chemfuelOutput << " mortar shell(s)." << '\n';
+ //   cout << clothOutput << " duster(s)" << '\n';
 
 }
 
-
 int main() {
 	printf("Loading program...\n");
+
     chooseChoice();
-    checkResources;
+
+    
+
+    item* table = new item();
+    table->name = "table";
+    resources* tres = new resources();
+    tres->wood = 28;
+    table->cost = *tres;
+    build_item(table);
+
+    item* gun = new item();
+    gun->name = "gun";
+    resources* gres = new resources();
+    gres->steel = 60;
+    gun->cost = *gres;
+    build_item(gun);
+
+    item* armor = new item();
+    armor->name = "armor";
+    resources* ares = new resources();
+    ares->plasteel = 100;
+    armor->cost = *ares;
+    build_item(armor);
+
+    item* shells = new item();
+    shells->name = "shells";
+    resources* sres = new resources();
+    sres->chemfuel = 15;
+    shells->cost = *sres;
+    build_item(shells);
+
+    item* clothes = new item();
+    clothes->name = "clothes";
+    resources* cres = new resources();
+    cres->cloth = 80;
+    clothes->cost = *cres;
+    build_item(clothes);
+
+    printResults();
+
 }
 
